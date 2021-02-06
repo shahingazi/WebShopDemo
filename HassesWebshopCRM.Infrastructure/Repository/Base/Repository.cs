@@ -10,7 +10,7 @@ namespace HassesWebshopCRM.Infrastructure.Repository.Base
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        protected readonly CRMDbContext _dbContext;
+        private readonly CRMDbContext _dbContext;
 
         public Repository(CRMDbContext dbContext)
         {

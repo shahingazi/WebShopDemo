@@ -8,7 +8,7 @@ namespace HassesWebshopCRM.Domain.AggregatesModel.ProductAggregate
         Task<IEnumerable<Product>> GetAllAsync();
         Task<Product> AddAsync(Product customer);
         Task<Product> GetByIdAsync(int Id);
-        void Update(Product product);
-        void Delete(Product product);
+        Task UpdateAsync(Product product);
+        Task DeleteAsync(Product product);
     }
 }

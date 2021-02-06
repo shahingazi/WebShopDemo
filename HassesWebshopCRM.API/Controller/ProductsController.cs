@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace HassesWebshopCRM.API.Controller
 {
     [Route("api/[controller]")]
@@ -21,7 +19,7 @@ namespace HassesWebshopCRM.API.Controller
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var products = await _productService.GetAllAsync();
+            var products = await _productService.GetAllAsync();          
             return Ok(products);
         }
 
@@ -30,12 +28,10 @@ namespace HassesWebshopCRM.API.Controller
         public async Task<IActionResult> Get(int id)
         {
             var product = await _productService.GetByIdAsync(id);
-
             if (product == null)
             {
                 return NotFound();
             }
-
             return Ok(product);
         }
 
@@ -50,7 +46,35 @@ namespace HassesWebshopCRM.API.Controller
             await _productService.AddAsync(product);
             return Ok(product);
         }
+        // PUT api/<OrdersController>/5
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAsync(int id, [FromBody] Product productInputModel)
+        {
+            var product = await _productService.GetByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            product.Description = productInputModel.Description;
+            product.Price = productInputModel.Price;
+            product.Title = productInputModel.Title;
+            product.AvailableProduct = productInputModel.AvailableProduct;
+            await _productService.UpdateAsync(product);
+            return Ok();
+        }
 
+        // DELETE api/<OrdersController>/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var product = await _productService.GetByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            await _productService.DeleteAsync(product);
+            return Ok();
+        }
     }
 }

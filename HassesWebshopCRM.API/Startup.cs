@@ -1,8 +1,10 @@
 
 using HassesWebshopCRM.Domain.AggregatesModel.CustomerAggregate;
+using HassesWebshopCRM.Domain.AggregatesModel.OrderAggregate;
 using HassesWebshopCRM.Domain.AggregatesModel.ProductAggregate;
 using HassesWebshopCRM.Domain.SeedWork;
 using HassesWebshopCRM.Infrastructure;
+using HassesWebshopCRM.Infrastructure.Repository;
 using HassesWebshopCRM.Infrastructure.Repository.Base;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,8 +35,11 @@ namespace HassesWebshopCRM.API
                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IRepository<Customer>, Repository<Customer>>();
             services.AddScoped<IRepository<Product>, Repository<Product>>();
+            services.AddScoped<IRepository<Order>, Repository<Order>>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             services.AddSwaggerGen(c =>
             {

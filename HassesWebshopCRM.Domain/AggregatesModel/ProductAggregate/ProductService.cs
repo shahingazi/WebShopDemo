@@ -28,14 +28,16 @@ namespace HassesWebshopCRM.Domain.AggregatesModel.ProductAggregate
             return await _productRepository.GetByIdAsync(id);
         }
 
-        public async void Update(Product product)
+        public async Task  UpdateAsync(Product product)
         {
             await _productRepository.UpdateAsync(product);
         }
 
-        public async void Delete(Product product)
+        public async Task  DeleteAsync(Product product)
         {
             await _productRepository.DeleteAsync(product);
         }
+
+        
     }
 }
