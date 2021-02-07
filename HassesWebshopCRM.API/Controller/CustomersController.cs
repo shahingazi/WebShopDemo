@@ -1,5 +1,8 @@
-﻿using HassesWebshopCRM.Domain.AggregatesModel.CustomerAggregate;
+﻿using HassesWebshopCRM.API.Common;
+using HassesWebshopCRM.Domain.AggregatesModel.CustomerAggregate;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace HassesWebshopCRM.API.Controller
@@ -9,44 +12,72 @@ namespace HassesWebshopCRM.API.Controller
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _repository;
+        private readonly ILoggerManager _loggerManager;
 
-        public CustomersController(ICustomerService customerRepository)
+        public CustomersController(ICustomerService customerRepository, ILoggerManager loggerManager)
         {
             _repository = customerRepository;
+            _loggerManager = loggerManager;
 
         }
-        // GET: api/<CustomersController>
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var customers = await _repository.GetAllAsync();
-            return Ok(customers);
+            try
+            {
+                var customers = await _repository.GetAllAsync();
+                return Ok(customers);
+            }
+            catch (Exception ex)
+            {
+                _loggerManager.LogError(ex.StackTrace + ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
         }
 
-        // GET api/<CustomersController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var customer = await _repository.GetByIdAsync(id);
-
-            if (customer == null)
+            try
             {
-                return NotFound();
+                var customer = await _repository.GetByIdAsync(id);
+                if (customer == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(customer);
+            }
+            catch (Exception ex)
+            {
+                _loggerManager.LogError(ex.StackTrace + ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
 
-            return Ok(customer);
+
         }
 
-        // POST api/<CustomersController>
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Customer customer)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                await _repository.AddAsync(customer);
+                return Ok(customer);
             }
-            await _repository.AddAsync(customer);
-            return Ok(customer);
+            catch (Exception ex)
+            {
+                _loggerManager.LogError(ex.StackTrace + ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
         }
     }
 }

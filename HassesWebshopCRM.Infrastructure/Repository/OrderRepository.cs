@@ -1,7 +1,6 @@
 ﻿using HassesWebshopCRM.Domain.AggregatesModel.OrderAggregate;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +16,18 @@ namespace HassesWebshopCRM.Infrastructure.Repository
         }
         public IEnumerable<Order>  GetAllOrders()
         {
-            return _dbContext.Orders.Include(x => x.OrderItems).ThenInclude(x => x.Product);
+            return _dbContext.Orders
+                .Include(x=>x.Customer)
+                .Include(x => x.OrderItems)
+                .ThenInclude(x => x.Product);
+        }
+
+        public int GetLastOrderId()
+        {
+            if (_dbContext.Orders.Count() ==0)
+                return 0;
+          
+            return _dbContext.Orders.Max(x=>x.Id);
         }
     }
 }

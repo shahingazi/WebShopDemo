@@ -1,4 +1,5 @@
 
+using HassesWebshopCRM.API.Common;
 using HassesWebshopCRM.Domain.AggregatesModel.CustomerAggregate;
 using HassesWebshopCRM.Domain.AggregatesModel.OrderAggregate;
 using HassesWebshopCRM.Domain.AggregatesModel.ProductAggregate;
@@ -40,13 +41,14 @@ namespace HassesWebshopCRM.API
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddSingleton<ILoggerManager, LoggerManager>();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tutorial API", Version = "v1" });
             });
 
-
+           
             services.AddControllers();
         }
 

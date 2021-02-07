@@ -4,7 +4,11 @@ using System.Text;
 
 namespace HassesWebshopCRM.Domain.AggregatesModel.OrderAggregate
 {
-    class OrderStatus
+    public enum OrderStatus
     {
+        Pending =1,
+        Processing,
+        Delivered
+        
     }
 }

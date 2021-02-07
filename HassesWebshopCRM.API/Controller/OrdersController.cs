@@ -1,9 +1,11 @@
-﻿using HassesWebshopCRM.API.Model;
+﻿using HassesWebshopCRM.API.Common;
+using HassesWebshopCRM.API.Model;
 using HassesWebshopCRM.Domain.AggregatesModel.OrderAggregate;
+using HassesWebshopCRM.Domain.AggregatesModel.ProductAggregate;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
-
 
 namespace HassesWebshopCRM.API.Controller
 {
@@ -12,59 +14,71 @@ namespace HassesWebshopCRM.API.Controller
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly IProductService _productService;
+        private readonly ILoggerManager _loggerManager;
 
-        public OrdersController(IOrderService orderService)
+        public OrdersController(IOrderService orderService,
+            IProductService productService, ILoggerManager loggerManager)
         {
             _orderService = orderService;
-
+            _productService = productService;
+            _loggerManager = loggerManager;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var orders = _orderService.GetAll();
-            return Ok(orders);
+            try
+            {
+                var orderDetailsModel = new OrderDetailsModel();
+                var orders = _orderService.GetAll();
+                return Ok(orderDetailsModel.Map(orders));
+            }
+            catch (Exception ex)
+            {
+                _loggerManager.LogError(ex.StackTrace + ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public string Get(int orderNumber)
         {
             return "value";
         }
-       
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] OrderInputModel orderInputmodel)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
-            Order order = ProcessOrder(orderInputmodel);
-            var result = await _orderService.AddAsync(order);
-            return Ok(result.OrderNumber);
-        }
-
-        private static Order ProcessOrder(OrderInputModel orderInputmodel)
-        {
-            var order = new Order
-            {
-                Address = orderInputmodel.Address.ToString(),
-                CustomerId = orderInputmodel.CustomerId
-            };
-
-            order.OrderItems = new List<OrderItem>();
-            foreach (var item in orderInputmodel.Items)
-            {
-                order.OrderItems.Add(new OrderItem
+                if (!ModelState.IsValid)
                 {
-                    NoOfItem = item.NoOfProduct,
-                    PorductId = item.ProductId,
+                    return BadRequest(ModelState);
+                }
 
-                });
+                foreach (var item in orderInputmodel.Items)
+                {
+                    var product = await _productService.GetByIdAsync(item.ProductId);
+                    product.AvailableProduct -= item.NoOfProduct;
+                    if (product.AvailableProduct < 0)
+                        return NotFound(product);
+                    await _productService.UpdateAsync(product);
+                }
+
+                var result = await _orderService.AddAsync(orderInputmodel.Order);
+                return Ok(result.OrderNumber);
+
+            }
+            catch (Exception ex)
+            {
+                _loggerManager.LogError(ex.StackTrace + ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
 
-            return order;
         }
+
 
     }
 }

@@ -10,5 +10,6 @@ namespace HassesWebshopCRM.Domain.AggregatesModel.ProductAggregate
         Task<Product> GetByIdAsync(int Id);
         Task UpdateAsync(Product product);
         Task DeleteAsync(Product product);
+     
     }
 }
