@@ -1,5 +1,4 @@
-﻿
-using HassesWebshopCRM.Domain.AggregatesModel.OrderAggregate;
+﻿using HassesWebshopCRM.Domain.AggregatesModel.OrderAggregate;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -7,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace HassesWebshopCRM.API.Model
 {
     public class OrderInputModel
-    {
+    {      
         public int CustomerId { get; set; }
         public List<OrderItemInputModel> Items { get; set; }
         public DeliveryAddressInputModel Address { get; set; }

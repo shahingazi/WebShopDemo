@@ -14,6 +14,27 @@ namespace HassesWebshopCRM.API.Model
         public OrderStatus Status { get; set; }
         public List<OrderItemDetailsModel> Items { get; set; }
 
+
+        public OrderDetailsModel Map(Order order)
+        {
+            return new OrderDetailsModel
+            {
+                OrderNumber = order.OrderNumber,
+                CustomerName = order.Customer.Name,
+                DeliveryAddress = order.Address,
+                Status = order.Status,
+                CreatedAt = order.CreatedAt,
+                Items = order.OrderItems.Select(x => new OrderItemDetailsModel
+                {
+                    ItemId = x.Id,
+                    Title = x.Product.Title,
+                    NoOfItems = x.NoOfItem,
+                    Price = x.Product.Price,
+                    TotalPrice = x.Amount
+                }).ToList()
+            };
+        }
+
         public IEnumerable<OrderDetailsModel> Map(IEnumerable<Order> orders)
         {
             return orders.Select(x => new OrderDetailsModel

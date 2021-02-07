@@ -7,5 +7,6 @@ namespace HassesWebshopCRM.Domain.AggregatesModel.OrderAggregate
     {
         IEnumerable<Order> GetAll();
         Task<Order> AddAsync(Order order);
+        Order GetOrderByOrderNumber(string orderNumber);
     }
 }

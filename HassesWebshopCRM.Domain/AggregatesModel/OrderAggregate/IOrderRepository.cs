@@ -6,5 +6,6 @@ namespace HassesWebshopCRM.Domain.AggregatesModel.OrderAggregate
     {
         IEnumerable<Order> GetAllOrders();
         int GetLastOrderId();
+        Order GetOrderByOrderNumber(string orderNumber);
     }
 }

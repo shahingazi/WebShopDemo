@@ -22,6 +22,14 @@ namespace HassesWebshopCRM.Infrastructure.Repository
                 .ThenInclude(x => x.Product);
         }
 
+        public Order GetOrderByOrderNumber(string orderNumber)
+        {
+            return _dbContext.Orders
+                .Include(x => x.Customer)
+                .Include(x => x.OrderItems)
+                .ThenInclude(x => x.Product).FirstOrDefault(x=> x.OrderNumber == orderNumber);
+        }
+
         public int GetLastOrderId()
         {
             if (_dbContext.Orders.Count() ==0)

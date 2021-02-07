@@ -42,10 +42,20 @@ namespace HassesWebshopCRM.API.Controller
 
         }
 
-        [HttpGet("{id}")]
-        public string Get(int orderNumber)
+        [HttpGet("{orderNumber}")]
+        public IActionResult Get(string orderNumber)
         {
-            return "value";
+            try
+            {
+                var orderDetailsModel = new OrderDetailsModel();
+                var order = _orderService.GetOrderByOrderNumber(orderNumber);
+                return Ok(orderDetailsModel.Map(order));
+            }
+            catch (Exception ex)
+            {
+                _loggerManager.LogError(ex.StackTrace + ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPost]
