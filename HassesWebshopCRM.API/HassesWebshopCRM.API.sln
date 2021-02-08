@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HassesWebshopCRM.Domain", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HassesWebshopCRM.Infrastructure", "..\HassesWebshopCRM.Infrastructure\HassesWebshopCRM.Infrastructure.csproj", "{DA59823B-0BCA-480A-B344-6F2920A6430D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HassesWebshopCRM.Domain.Test", "..\HassesWebshopCRM.Domain.Test\HassesWebshopCRM.Domain.Test.csproj", "{57759605-E773-4B2E-9D86-5D364A32A347}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HassesWebshopCRM.Domain.Test", "..\HassesWebshopCRM.Domain.Test\HassesWebshopCRM.Domain.Test.csproj", "{57759605-E773-4B2E-9D86-5D364A32A347}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HassesWebshopCRM.API.Test", "..\HassesWebshopCRM.API.Test\HassesWebshopCRM.API.Test.csproj", "{2C448A32-ABEA-4258-9A67-91C678F9F3DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HassesWebshopCRM.API.Test", "..\HassesWebshopCRM.API.Test\HassesWebshopCRM.API.Test.csproj", "{2C448A32-ABEA-4258-9A67-91C678F9F3DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HassesWebshopCRM.ExternalServiceHandler", "..\HassesWebshopCRM.ExternalServiceHandler\HassesWebshopCRM.ExternalServiceHandler.csproj", "{45FFFF00-DF0C-4DAB-8CE2-DBA15599E707}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{2C448A32-ABEA-4258-9A67-91C678F9F3DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C448A32-ABEA-4258-9A67-91C678F9F3DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C448A32-ABEA-4258-9A67-91C678F9F3DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45FFFF00-DF0C-4DAB-8CE2-DBA15599E707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45FFFF00-DF0C-4DAB-8CE2-DBA15599E707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45FFFF00-DF0C-4DAB-8CE2-DBA15599E707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45FFFF00-DF0C-4DAB-8CE2-DBA15599E707}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

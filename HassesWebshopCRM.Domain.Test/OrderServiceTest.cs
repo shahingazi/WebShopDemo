@@ -21,7 +21,7 @@ namespace HassesWebshopCRM.Domain.Test
         }
 
         [Fact]
-        public async Task AddOrderSuccessfullyAsync()
+        public async Task AddOrderSuccessfullyAsyncTest()
         {
             var orderInput = new Order
             {
@@ -38,13 +38,31 @@ namespace HassesWebshopCRM.Domain.Test
                     }
                 }
             };
-            
-            _mockorderRepository.Setup(repo => repo.GetLastOrderId()).Returns(1);            
-            var service = new OrderService(_mockbaserepository.Object, _mockorderRepository.Object);
 
+            var returnOrder = new Order
+            {
+                CustomerId = 1,
+                Address = "Albatrosvagern",
+                CreatedAt = DateTime.Now,
+                Status = OrderStatus.Pending,
+                OrderItems = new List<OrderItem>
+                {
+                    new OrderItem
+                    {
+                        NoOfItem =10,
+                        PorductId =1,
+                    }
+                }
+            };
+
+            _mockorderRepository.Setup(repo => repo.GetLastOrderId()).Returns(2);
+            _mockbaserepository.Setup(repo => repo.AddAsync(orderInput)).Returns(Task.Run(() => returnOrder));
+            var service = new OrderService(_mockbaserepository.Object, _mockorderRepository.Object);
             var order = await service.AddAsync(orderInput);
-            
-            Assert.Equal("SO1001", orderInput.OrderNumber);
+            _mockbaserepository.Verify(x => x.AddAsync(It.Is<Order>(actualOrder => actualOrder.OrderNumber == "SO1002")), Times.Once);
+            Assert.Equal(returnOrder, order);
         }
+
+
     }
 }

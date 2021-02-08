@@ -15,7 +15,7 @@ namespace HassesWebshopCRM.Infrastructure.Repository.Base
         public Repository(CRMDbContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        }
+        }        
 
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
