@@ -6,37 +6,32 @@ using System.Text.Json.Serialization;
 namespace HassesWebshopCRM.API.Model
 {
     public class OrderInputModel
-    {      
+    {
         public int CustomerId { get; set; }
         public List<OrderItemInputModel> Items { get; set; }
         public DeliveryAddressInputModel Address { get; set; }
-        [JsonIgnore]
-        public Order Order
+
+        public Order Map(OrderInputModel model)
         {
-            get
+            var order = new Order
             {
-                var order = new Order
-                {
-                    Address = Address.ToString(),
-                    CustomerId = CustomerId,
-                    Status = OrderStatus.Pending,
-                    CreatedAt = DateTime.Now
-                   
-                };
+                Address = model.Address.ToString(),
+                CustomerId = model.CustomerId,
+                Status = OrderStatus.Pending,
+                CreatedAt = DateTime.Now
 
-                order.OrderItems = new List<OrderItem>();
-                foreach (var item in Items)
+            };
+            order.OrderItems = new List<OrderItem>();
+            foreach (var item in model.Items)
+            {
+                order.OrderItems.Add(new OrderItem
                 {
-                    order.OrderItems.Add(new OrderItem
-                    {
-                        NoOfItem = item.NoOfProduct,
-                        PorductId = item.ProductId,
+                    NoOfItem = item.NoOfProduct,
+                    PorductId = item.ProductId,
 
-                    });
-                }
-                return order;
+                });
             }
+            return order;
         }
-
     }
 }

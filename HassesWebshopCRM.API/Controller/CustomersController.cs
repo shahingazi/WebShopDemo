@@ -55,10 +55,7 @@ namespace HassesWebshopCRM.API.Controller
                 _loggerManager.LogError(ex.StackTrace + ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-
-
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Customer customer)

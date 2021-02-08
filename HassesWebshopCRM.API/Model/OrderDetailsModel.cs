@@ -14,7 +14,6 @@ namespace HassesWebshopCRM.API.Model
         public OrderStatus Status { get; set; }
         public List<OrderItemDetailsModel> Items { get; set; }
 
-
         public OrderDetailsModel Map(Order order)
         {
             return new OrderDetailsModel
@@ -30,7 +29,7 @@ namespace HassesWebshopCRM.API.Model
                     Title = x.Product.Title,
                     NoOfItems = x.NoOfItem,
                     Price = x.Product.Price,
-                    TotalPrice = x.Amount
+                    TotalPrice = x.Product.Price * x.NoOfItem
                 }).ToList()
             };
         }
@@ -50,7 +49,7 @@ namespace HassesWebshopCRM.API.Model
                     Title = x.Product.Title,
                     NoOfItems = x.NoOfItem,
                     Price = x.Product.Price,
-                    TotalPrice = x.Amount
+                    TotalPrice = x.NoOfItem * x.Product.Price
                 }).ToList()
             });
         }

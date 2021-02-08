@@ -7,8 +7,7 @@ namespace HassesWebshopCRM.Domain.AggregatesModel.OrderAggregate
     {
         public int Id { get; set; }
         public int PorductId { get; set; }
-        public int NoOfItem { get; set; }
-        public decimal Amount => NoOfItem * Product.Price;
+        public int NoOfItem { get; set; }       
         public int OrderId { get; set; }
         [ForeignKey("OrderId")]
         public Order Order { get; set; }

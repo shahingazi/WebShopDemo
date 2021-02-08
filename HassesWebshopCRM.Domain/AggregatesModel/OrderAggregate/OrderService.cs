@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-
-
 namespace HassesWebshopCRM.Domain.AggregatesModel.OrderAggregate
 {
     public class OrderService : IOrderService

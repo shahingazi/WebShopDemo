@@ -18,7 +18,8 @@ namespace HassesWebshopCRM.API.Controller
         private readonly ILoggerManager _loggerManager;
 
         public OrdersController(IOrderService orderService,
-            IProductService productService, ILoggerManager loggerManager)
+            IProductService productService,
+            ILoggerManager loggerManager)
         {
             _orderService = orderService;
             _productService = productService;
@@ -39,7 +40,6 @@ namespace HassesWebshopCRM.API.Controller
                 _loggerManager.LogError(ex.StackTrace + ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-
         }
 
         [HttpGet("{orderNumber}")]
@@ -72,12 +72,14 @@ namespace HassesWebshopCRM.API.Controller
                 {
                     var product = await _productService.GetByIdAsync(item.ProductId);
                     product.AvailableProduct -= item.NoOfProduct;
-                    if (product.AvailableProduct < 0)
+
+                    if (!await CheckProductAvailablityAsync(item))
                         return NotFound(product);
+
                     await _productService.UpdateAsync(product);
                 }
 
-                var result = await _orderService.AddAsync(orderInputmodel.Order);
+                var result = await _orderService.AddAsync(orderInputmodel.Map(orderInputmodel));
                 return Ok(result.OrderNumber);
 
             }
@@ -89,6 +91,11 @@ namespace HassesWebshopCRM.API.Controller
 
         }
 
-
+        private async Task<bool> CheckProductAvailablityAsync(OrderItemInputModel item)
+        {
+            var product = await _productService.GetByIdAsync(item.ProductId);
+            product.AvailableProduct -= item.NoOfProduct;
+            return product.AvailableProduct >= 0;
+        }
     }
 }

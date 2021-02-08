@@ -37,13 +37,13 @@ namespace HassesWebshopCRM.API.Test
         [Fact]
         public void OrderStatusShouldBePending()
         {
-            Assert.Equal(OrderStatus.Pending, _orderInputModel.Order.Status);
+            Assert.Equal(OrderStatus.Pending, _orderInputModel.Map(_orderInputModel).Status);
         }
 
         [Fact]
         public void AddressShouldBeMatched()
         {
-            Assert.Equal("Shahin,Albatrossvagen 76,Sweden,Stockholm,1366", _orderInputModel.Order.Address);
+            Assert.Equal("Shahin,Albatrossvagen 76,Sweden,Stockholm,1366", _orderInputModel.Map(_orderInputModel).Address);
         }
     }
 }

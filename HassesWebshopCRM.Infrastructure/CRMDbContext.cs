@@ -7,9 +7,9 @@ namespace HassesWebshopCRM.Infrastructure
 {
     public class CRMDbContext: DbContext
     {
-        public CRMDbContext(DbContextOptions<CRMDbContext> options) : base(options)
+        public CRMDbContext(DbContextOptions<CRMDbContext> options) 
+            : base(options)
         {
-
         }
 
         public DbSet<Customer> Customers { get; set; }
